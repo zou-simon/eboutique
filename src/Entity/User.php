@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -25,6 +27,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string')]
     private $password;
+
+    #[ORM\Column(type: 'string', length: 40)]
+    private $firstName;
+
+    #[ORM\Column(type: 'string', length: 40)]
+    private $lastName;
+
+    #[ORM\Column(type: 'string', length: 16)]
+    private $phone;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CustomerAddress::class)]
+    private $customerAddresses;
+
+    public function __construct()
+    {
+        $this->customerAddresses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -94,5 +113,71 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomerAddress>
+     */
+    public function getCustomerAddresses(): Collection
+    {
+        return $this->customerAddresses;
+    }
+
+    public function addCustomerAddress(CustomerAddress $customerAddress): self
+    {
+        if (!$this->customerAddresses->contains($customerAddress)) {
+            $this->customerAddresses[] = $customerAddress;
+            $customerAddress->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerAddress(CustomerAddress $customerAddress): self
+    {
+        if ($this->customerAddresses->removeElement($customerAddress)) {
+            // set the owning side to null (unless already changed)
+            if ($customerAddress->getUser() === $this) {
+                $customerAddress->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

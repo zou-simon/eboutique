@@ -26,13 +26,18 @@ body {
   z-index: 2;
 }
 
-.form-auth input[type="email"] {
+.form-auth input:not(.firstInput):not(.lastInput) {
+  margin-bottom: -1px;
+  border-radius: 0;
+}
+
+.firstInput {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.form-auth input[type="password"] {
+.lastInput {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;

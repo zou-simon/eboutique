@@ -8,28 +8,63 @@
 
 {% block body %}
     <main class="form-auth">
-        {{ form_start(registrationForm) }}
-            <a href="{{ path('app_home') }}" class="text-dark text-decoration-none">
-                Company logo
-            </a>
-            <h1 class="h3 mb-3 fw-normal">Register</h1>
-
-            <div class="form-floating">
-                {{ form_widget(registrationForm.email) }}
-                {{ form_label(registrationForm.email) }}
+        {% if app.user %}
+            <div class="mb-3">
+                    You are logged in as {{ app.user.email }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
-            <div class="form-floating">
-                {{ form_widget(registrationForm.plainPassword) }}
-                {{ form_label(registrationForm.plainPassword) }}
-            </div>
-            <div class="form-check">
-                {{ form_widget(registrationForm.agreeTerms) }}
-                {{ form_label(registrationForm.agreeTerms) }}
-            </div>
+            <a href="{{ path('app_home') }}">Back to home</a>
+        {% else %}
+                {{ form_start(registrationForm) }}
+                    <a href="{{ path('app_home') }}" class="text-dark text-decoration-none">
+                        Company logo
+                    </a>
+                    <h1 class="h3 mb-3 fw-normal">Register</h1>
 
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+                    <div class="form-floating">
+                        {{ form_widget(registrationForm.firstName) }}
+                        {{ form_label(registrationForm.firstName) }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(registrationForm.lastName) }}
+                        {{ form_label(registrationForm.lastName) }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(registrationForm.email) }}
+                        {{ form_label(registrationForm.email) }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(registrationForm.phone) }}
+                        {{ form_label(registrationForm.phone) }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(registrationForm.plainPassword) }}
+                        {{ form_label(registrationForm.plainPassword) }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(addressForm.address) }}
+                        {{ form_label(addressForm.address) }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(addressForm.zipCode) }}
+                        {{ form_label(addressForm.zipCode) }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(addressForm.city) }}
+                        {{ form_label(addressForm.city) }}
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(addressForm.country) }}
+                        {{ form_label(addressForm.country) }}
+                    </div>
+                    <div class="form-check">
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                        {{ form_label(registrationForm.agreeTerms) }}
+                    </div>
 
-            <p class="my-3 text-muted">Already register ? <a href="{{ path('app_login') }}">Sign in</a></p>
-        {{ form_end(registrationForm) }}
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+
+                    <p class="my-3 text-muted">Already register ? <a href="{{ path('app_login') }}">Sign in</a></p>
+                {{ form_end(registrationForm) }}
+        {% endif %}
     </main>
 {% endblock %}
