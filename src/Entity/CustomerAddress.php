@@ -127,9 +127,9 @@ class CustomerAddress
         return $this;
     }
 
-    public function getUser(): ?string
+    public function getUser(): ?User
     {
-        return $this->user->id;
+        return $this->user;
     }
 
     public function setUser(?User $user): self
