@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+    <main class="container-md">
+        {% if 'ROLE_ADMIN' in app.user.getRoles %}
+            <div class="d-flex mb-3 justify-content-evenly">
+                <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-primary px-5">Edit</a>
+
+                {{ include('product/_delete_form.html.twig') }}
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <img src="" class="col-12 col-md-6" alt="{{ product.name }}">
+            <div class="col-12 col-md-6">
+                <h1>{{ product.name }}</h1>
+                <p class="text-muted">{{ product.description }}</p>
+                <h2>${{ (product.priceHT * 1.2)|number_format(2) }}</h2>
+
+                <a href="#" class="btn btn-primary">Add cart</a>
+            </div>
+        </div>
+    </main>
+{% endblock %}

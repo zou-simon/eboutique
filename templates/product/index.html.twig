@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <main class="container-md">
+        <h1>Products</h1>
+
+        <div>
+            <span>Categories : </span>
+            <a href="{{ path('app_product_index') }}"
+               class="btn
+                    {% if selectedCategory is defined %}btn-outline-secondary
+                    {% else %}btn-secondary
+                    {% endif %}"
+            >All</a>
+            {% for category in categories %}
+                <a href="{{ path('app_category_show', {'id': category.id}) }}"
+                   class="btn
+                    {% if selectedCategory is defined and category.getId == selectedCategory %}btn-secondary
+                    {% else %}btn-outline-secondary
+                    {% endif %}"
+                >{{ category.name }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="row g-0">
+            {% for product in products %}
+                <div class="col-12 col-sm-6 col-lg-4 col-xxl-3">
+                    <div class="card rounded-2 m-3" onclick="location.href='{{ path('app_product_show', {'id': product.id}) }}'" style="cursor: pointer;">
+                        <img src="" class="card-img-top rounded-2" alt="{{ product.name }}">
+                        <div class="card-body">
+                            {{ product.available ? '<span class="text-success fw-light">In stock</span>' : '<span class="text-danger fw-light">Out of stock</span>' }}
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <div>
+                                <span class="fw-bold fs-4">${{ (product.priceHT * 1.2)|number_format(2) }}</span>
+                                <a class="btn btn-primary float-end" onclick="location.href='';event.stopPropagation();">Add cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <h5 class="text-muted text-center my-5">No product available</h5>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}
