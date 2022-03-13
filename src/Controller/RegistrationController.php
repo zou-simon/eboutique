@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CustomerAddress;
 use App\Entity\User;
-use App\Form\RegistrationAddressType;
+use App\Form\AddressType;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $address = new CustomerAddress();
-        $addressForm = $this->createForm(RegistrationAddressType::class, $address);
+        $addressForm = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
         $addressForm->handleRequest($request);
 
