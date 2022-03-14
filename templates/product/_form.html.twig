@@ -1,4 +1,45 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary px-5">{{ button_label|default('Save') }}</button>
+
+    {% if not form.vars.valid %}
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                {% for child in form.children %}
+                    {% for error in child.vars.errors %}
+                        <li>{{ error.message }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="mb-3">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.price) }}
+        {{ form_widget(form.price) }}
+    </div>
+    <div class="form-check mb-3">
+        {{ form_label(form.available) }}
+        {{ form_widget(form.available) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.category) }}
+        {{ form_widget(form.category) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.path) }}
+        {{ form_widget(form.path) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.alt) }}
+        {{ form_widget(form.alt) }}
+    </div>
+
+    <button class="btn btn-primary px-5 mb-3">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

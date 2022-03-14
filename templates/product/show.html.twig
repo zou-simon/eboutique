@@ -13,11 +13,17 @@
         {% endif %}
 
         <div class="row">
-            <img src="" class="col-12 col-md-6" alt="{{ product.name }}">
+            {% set media = product.getMedia|first %}
+            <img
+                    src="{{ media ? product.getMedia|first.getPath }}"
+                    class="col-12 col-md-6"
+                    alt="{{ media and media.getAlt ? product.getMedia|first.getAlt : product.name }}"
+            >
             <div class="col-12 col-md-6">
+                {{ product.available ? '<span class="text-success fw-light">In Stock</span>' : '<span class="text-danger fw-light">Out of Stock</span>' }}
                 <h1>{{ product.name }}</h1>
                 <p class="text-muted">{{ product.description }}</p>
-                <h2>${{ (product.priceHT * 1.2)|number_format(2) }}</h2>
+                <h2>${{ (product.price * 1.2)|number_format(2) }}</h2>
 
                 <a href="#" class="btn btn-primary">Add cart</a>
             </div>

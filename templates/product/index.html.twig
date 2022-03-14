@@ -28,13 +28,21 @@
             {% for product in products %}
                 <div class="col-12 col-sm-6 col-lg-4 col-xxl-3">
                     <div class="card rounded-2 m-3" onclick="location.href='{{ path('app_product_show', {'id': product.id}) }}'" style="cursor: pointer;">
-                        <img src="" class="card-img-top rounded-2" alt="{{ product.name }}">
+                        {% set media = product.getMedia|first %}
+                        <img
+                                src="{{ media ? product.getMedia|first.getPath }}"
+                                class="card-img-top rounded-2"
+                                alt="{{ media and media.getAlt ? product.getMedia|first.getAlt : product.name }}"
+                                height="300"
+                        >
                         <div class="card-body">
-                            {{ product.available ? '<span class="text-success fw-light">In stock</span>' : '<span class="text-danger fw-light">Out of stock</span>' }}
+                            {{ product.available ? '<span class="text-success fw-light">In Stock</span>' : '<span class="text-danger fw-light">Out of Stock</span>' }}
                             <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text" style="height: 100px;">
+                                {{ product.description|length < 100 ? product.description : product.description|slice(0, 100) ~ '...' }}
+                            </p>
                             <div>
-                                <span class="fw-bold fs-4">${{ (product.priceHT * 1.2)|number_format(2) }}</span>
+                                <span class="fw-bold fs-4">${{ (product.price * 1.2)|number_format(2) }}</span>
                                 <a class="btn btn-primary float-end" onclick="location.href='';event.stopPropagation();">Add cart</a>
                             </div>
                         </div>
