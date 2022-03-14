@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\CustomerAddress;
 use App\Entity\User;
-use App\Form\AddressType;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,9 +22,7 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $address = new CustomerAddress();
-        $addressForm = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
-        $addressForm->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
@@ -36,11 +33,17 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setRoles(["ROLE_USER"]);
-            $user->addCustomerAddress($address);
 
             $address->setFirstName($user->getFirstName());
             $address->setLastName($user->getLastName());
             $address->setPhone($user->getPhone());
+            $address->setAddress($form->get('address')->getData());
+            $address->setZipCode($form->get('zipCode')->getData());
+            $address->setCity($form->get('city')->getData());
+            $address->setCountry($form->get('country')->getData());
+            $address->setUser($user);
+
+            $user->addCustomerAddress($address);
 
             $entityManager->persist($address);
             $entityManager->persist($user);
@@ -56,7 +59,6 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-            'addressForm' => $addressForm->createView(),
         ]);
     }
 }

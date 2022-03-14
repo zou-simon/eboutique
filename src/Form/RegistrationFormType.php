@@ -81,6 +81,34 @@ class RegistrationFormType extends AbstractType
                     'class' => 'form-check-label',
                 ],
             ])
+            ->add('address', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control firstInput',
+                    'placeholder' => 'Address'
+                ],
+                'mapped' => false,
+            ])
+            ->add('zipCode', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'ZIP/Postal code'
+                ],
+                'mapped' => false,
+            ])
+            ->add('city', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'City'
+                ],
+                'mapped' => false,
+            ])
+            ->add('country', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control lastInput',
+                    'placeholder' => 'Country'
+                ],
+                'mapped' => false,
+            ])
         ;
     }
 

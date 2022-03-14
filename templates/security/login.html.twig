@@ -9,10 +9,6 @@
 {% block body %}
     <main class="form-auth">
         <form method="post">
-            {% if error %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
-
             {% if app.user %}
                 <div class="mb-3">
                     You are logged in as {{ app.user.email }}, <a href="{{ path('app_logout') }}">Logout</a>
@@ -23,6 +19,10 @@
                     Company logo
                 </a>
                 <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
                 <div class="form-floating">
                     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" placeholder="name@example.com" class="form-control firstInput" autocomplete="email" required autofocus>
