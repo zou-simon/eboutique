@@ -7,7 +7,6 @@ use App\Entity\CartLine;
 use App\Entity\Product;
 use App\Repository\CartLineRepository;
 use App\Repository\CartRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -21,11 +20,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class CartController extends AbstractController
 {
     #[Route('/', name: 'app_cart')]
-    public function index(UserRepository $userRepository, CartRepository $cartRepository, EntityManagerInterface $entityManager, Session $session): Response
+    public function index(CartRepository $cartRepository, EntityManagerInterface $entityManager, Session $session): Response
     {
         $cartLines = [];
-        if ($this->getUser()) {
-            $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+        if ($user = $this->getUser()) {
             if (count($user->getCarts())) {
                 $cart = $user->getLastCart();
                 $cartLines = $cart->getCartLines();
@@ -54,13 +52,12 @@ class CartController extends AbstractController
     }
 
     #[Route('/add/{id}', name: 'app_cart_add', methods: ['POST'])]
-    public function add(Request $request, Product $product, UserRepository $userRepository, CartRepository $cartRepository, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, Product $product, CartRepository $cartRepository, EntityManagerInterface $entityManager): Response
     {
         $cartLines = [];
         if ($this->isCsrfTokenValid('add'.$product->getId(), $request->request->get('_token'))) {
             $session = $request->getSession();
-            if ($this->getUser()) {
-                $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+            if ($user = $this->getUser()) {
                 if (count($user->getCarts())) {
                     $cart = $user->getLastCart();
                     $cartLines = $cart->getCartLines();
@@ -133,7 +130,6 @@ class CartController extends AbstractController
             }
             $i++;
         }
-
         // Product not in cart
         $cartLine = new CartLine();
         $cartLine->setProduct($product);
@@ -150,13 +146,12 @@ class CartController extends AbstractController
      * @throws ORMException
      */
     #[Route('/update', name: 'app_cart_update', methods: ['POST'])]
-    public function update(Request $request, UserRepository $userRepository, CartRepository $cartRepository, CartLineRepository $cartLineRepository, EntityManagerInterface $entityManager): Response
+    public function update(Request $request, CartRepository $cartRepository, CartLineRepository $cartLineRepository, EntityManagerInterface $entityManager): Response
     {
         $cartLines = [];
         if ($request->getMethod() == 'POST') {
             $session = $request->getSession();
-            if ($this->getUser()) {
-                $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+            if ($user = $this->getUser()) {
                 $cart = $user->getLastCart();
             } else {
                 $cart = $cartRepository->findOneBy(['id' => $session->get('cartId')]);

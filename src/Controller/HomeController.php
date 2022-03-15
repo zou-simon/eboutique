@@ -11,11 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(UserRepository $userRepository, Session $session): Response
+    public function index(): Response
     {
-        if ($this->getUser()) {
-            $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+        if ($user = $this->getUser()) {
             if (count($user->getCarts())) {
+                $session = new Session();
                 $session->set('cartSize', $user->getLastCart()->getCartSize());
             }
         }
