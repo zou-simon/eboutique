@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,7 +76,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_product_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, ProductRepository $productRepository, MediaRepository $mediaRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
@@ -92,27 +91,25 @@ class ProductController extends AbstractController
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    /**
+     * Store uploaded image
+     *
+     * @param FormInterface $form
+     * @param Product $product
+     * @param Media $media
+     * @param EntityManagerInterface $entityManager
+     * @param SluggerInterface $slugger
+     * @return boolean
+     */
     public function upload(FormInterface $form, Product $product, Media $media, EntityManagerInterface $entityManager, SluggerInterface $slugger)
     {
         $file = $form->get('path')->getData();
         if ($file) {
             $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            // this is needed to safely include the file name as part of the URL
             $safeFilename = $slugger->slug($originalFilename);
             $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
+            $file->move($this->getParameter('products_directory'), $newFilename);
 
-            // Move the file to the directory where brochures are stored
-            try {
-                $file->move(
-                    $this->getParameter('products_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
-            }
-
-            // updates the 'brochureFilename' property to store the PDF file name
-            // instead of its contents
             $media->setPath('/uploads/products/' . $newFilename);
             $alt = $form->get('alt')->getData();
             if ($alt) $media->setAlt($alt);
