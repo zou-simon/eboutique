@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Edit account{% endblock %}
+
+{% block content %}
+    <main class="container-md">
+        <h1>Edit account</h1>
+
+        {{ include('user/_form.html.twig') }}
+
+        {{ include('user/_delete_form.html.twig') }}
+    </main>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Add new address{% endblock %}
+
+{% block content %}
+    <main class="container-md">
+        <h1>Add new address</h1>
+
+        {{ include('customer_address/_form.html.twig') }}
+    </main>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Account{% endblock %}
+
+{% block content %}
+    <main class="container-md">
+        <h1>Account</h1>
+
+        {% if message is defined %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endif %}
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>First name</th>
+                <td>{{ user.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Last name</th>
+                <td>{{ user.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ user.phone }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_user_edit') }}" class="btn btn-primary mb-3">Edit account</a>
+
+        <h3>Delivery addresses</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">ZIP/Postal code</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Country</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer_address in customer_addresses %}
+                    <tr>
+                        <td>{{ customer_address.firstName }}</td>
+                        <td>{{ customer_address.lastName }}</td>
+                        <td>{{ customer_address.phone }}</td>
+                        <td>{{ customer_address.address }}</td>
+                        <td>{{ customer_address.zipCode }}</td>
+                        <td>{{ customer_address.city }}</td>
+                        <td>{{ customer_address.country }}</td>
+                        <td>
+                            <a href="{{ path('app_address_edit', {'id': customer_address.id}) }}">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5">No address found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_address_new') }}" class="btn btn-primary mb-3">Add address</a>
+
+    </main>
+{% endblock %}
