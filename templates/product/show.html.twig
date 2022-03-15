@@ -4,7 +4,7 @@
 
 {% block content %}
     <main class="container-md">
-        {% if 'ROLE_ADMIN' in app.user.getRoles %}
+        {% if app.user and 'ROLE_ADMIN' in app.user.getRoles %}
             <div class="d-flex mb-3 justify-content-evenly">
                 <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-primary px-5">Edit</a>
 
@@ -13,16 +13,16 @@
         {% endif %}
 
         <div class="row">
-            {% set media = product.getMedia|first %}
+            {% set media = product.media|first %}
             <img
-                    src="{{ media ? product.getMedia|first.getPath }}"
+                    src="{{ media ? product.media|first.path }}"
                     class="col-12 col-md-6"
-                    alt="{{ media and media.getAlt ? product.getMedia|first.getAlt : product.name }}"
+                    alt="{{ media and media.alt ? product.media|first.alt : product.name }}"
             >
             <div class="col-12 col-md-6">
                 {{ product.available ? '<span class="text-success fw-light">In Stock</span>' : '<span class="text-danger fw-light">Out of Stock</span>' }}
                 <h1>{{ product.name }}</h1>
-                <p class="text-muted">{{ product.description }}</p>
+                <p class="text-muted text-break">{{ product.description }}</p>
                 <h2>${{ (product.price * 1.2)|number_format(2) }}</h2>
 
                 <a href="#" class="btn btn-primary">Add cart</a>
