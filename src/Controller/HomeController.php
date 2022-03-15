@@ -16,7 +16,7 @@ class HomeController extends AbstractController
         if ($this->getUser()) {
             $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
             if (count($user->getCarts())) {
-                $session->set('cartSize', $user->getCart()->getCartSize());
+                $session->set('cartSize', $user->getLastCart()->getCartSize());
             }
         }
 

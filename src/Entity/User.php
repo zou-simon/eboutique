@@ -193,9 +193,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->carts;
     }
 
-    public function getCart(): Cart
+    public function getLastCart(): Cart
     {
-        return $this->carts[0];
+        return $this->carts[count($this->carts) - 1];
     }
 
     public function addCart(Cart $cart): self

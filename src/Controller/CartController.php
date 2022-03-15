@@ -27,7 +27,7 @@ class CartController extends AbstractController
         if ($this->getUser()) {
             $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
             if (count($user->getCarts())) {
-                $cart = $user->getCart();
+                $cart = $user->getLastCart();
                 $cartLines = $cart->getCartLines();
             } else {
                 $cart = new Cart();
@@ -62,7 +62,7 @@ class CartController extends AbstractController
             if ($this->getUser()) {
                 $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
                 if (count($user->getCarts())) {
-                    $cart = $user->getCart();
+                    $cart = $user->getLastCart();
                     $cartLines = $cart->getCartLines();
                 } else {
                     $cart = new Cart();
@@ -157,7 +157,7 @@ class CartController extends AbstractController
             $session = $request->getSession();
             if ($this->getUser()) {
                 $user = $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
-                $cart = $user->getCart();
+                $cart = $user->getLastCart();
             } else {
                 $cart = $cartRepository->findOneBy(['id' => $session->get('cartId')]);
             }
