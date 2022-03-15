@@ -17,7 +17,7 @@
             {% for category in categories %}
                 <a href="{{ path('app_category_show', {'id': category.id}) }}"
                    class="btn
-                    {% if selectedCategory is defined and category.getId == selectedCategory %}btn-secondary
+                    {% if selectedCategory is defined and category.id == selectedCategory %}btn-secondary
                     {% else %}btn-outline-secondary
                     {% endif %}"
                 >{{ category.name }}</a>
@@ -28,18 +28,18 @@
             {% for product in products %}
                 <div class="col-12 col-sm-6 col-lg-4 col-xxl-3">
                     <div class="card rounded-2 m-3" onclick="location.href='{{ path('app_product_show', {'id': product.id}) }}'" style="cursor: pointer;">
-                        {% set media = product.getMedia|first %}
+                        {% set media = product.media|first %}
                         <img
-                                src="{{ media ? product.getMedia|first.getPath }}"
+                                src="{{ media ? product.media|first.path }}"
                                 class="card-img-top rounded-2"
-                                alt="{{ media and media.getAlt ? product.getMedia|first.getAlt : product.name }}"
+                                alt="{{ media and media.alt ? product.media|first.alt : product.name }}"
                                 height="300"
                         >
                         <div class="card-body">
                             {{ product.available ? '<span class="text-success fw-light">In Stock</span>' : '<span class="text-danger fw-light">Out of Stock</span>' }}
                             <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text" style="height: 100px;">
-                                {{ product.description|length < 100 ? product.description : product.description|slice(0, 100) ~ '...' }}
+                            <p class="card-text text-truncate">
+                                {{ product.description }}
                             </p>
                             <div>
                                 <span class="fw-bold fs-4">${{ (product.price * 1.2)|number_format(2) }}</span>
