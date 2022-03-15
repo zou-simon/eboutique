@@ -57,7 +57,7 @@ class CustomerAddress
 
     public function getLastName(): ?string
     {
-        return $this->name;
+        return $this->lastName;
     }
 
     public function setLastName(string $lastName): self
