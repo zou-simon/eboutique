@@ -43,7 +43,9 @@
                             </p>
                             <div>
                                 <span class="fw-bold fs-4">${{ (product.price * 1.2)|number_format(2) }}</span>
-                                <a class="btn btn-primary float-end" onclick="location.href='';event.stopPropagation();">Add cart</a>
+                                <span class="float-end" onclick="event.stopPropagation();">
+                                    {{ include('product/_add_form.html.twig') }}
+                                </span>
                             </div>
                         </div>
                     </div>
