@@ -21,7 +21,7 @@
                     {{ app.session.get('cartSize') is null ? 0 : app.session.get('cartSize') }}
                 </a>
                 {% if app.user %}
-                    <a class="btn btn-outline-danger" href="{{ path('app_logout') }}">Logout</a>
+                    <a class="btn btn-outline-secondary" href="{{ path('app_logout') }}">Logout</a>
                 {% else %}
                     <a class="btn btn-outline-primary me-2" href="{{ path('app_login') }}">Login</a>
                     <a class="btn btn-primary" href="{{ path('app_register') }}">Sign-up</a>

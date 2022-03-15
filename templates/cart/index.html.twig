@@ -4,7 +4,7 @@
 
 {% block content %}
     <main class="container-md">
-        <h1>Your cart</h1>
+        <h1>Shopping cart</h1>
 
         {% set totalPrice = 0 %}
         {% set totalPriceExclTax = 0 %}
@@ -12,18 +12,16 @@
             <table class="table align-middle">
                 <thead>
                     <tr>
-                        <th scope="col">Image</th>
+                        <th scope="col"></th>
                         <th scope="col">Name</th>
                         <th scope="col">Price</th>
-                        <th scope="col">Total price</th>
                         <th scope="col">Quantity</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for cartLine in cartLines|reverse %}
                         {% set product = cartLine.product %}
-                        {% set totalPriceExclTax = totalPrice + product.price * cartLine.quantity %}
                         {% set totalPrice = totalPrice + product.price * 1.2 * cartLine.quantity %}
                         <tr>
                             {% set media = product.media|first %}
@@ -42,7 +40,6 @@
                                 </a>
                             </td>
                             <td>${{ (product.price * 1.2)|number_format(2) }}</td>
-                            <td>${{ (product.price * 1.2 * cartLine.quantity)|number_format(2) }}</td>
                             <td>
                                 <form method="post" action="{{ path('app_cart_update') }}">
                                     <label>
@@ -61,11 +58,10 @@
             </table>
         </div>
 
-        <p class="text-end">Total price excl. tax: ${{ totalPriceExclTax|number_format(2) }}</p>
-        <p class="text-end fw-bold">Total price: ${{ totalPrice|number_format(2) }}</p>
+        <p class="text-end fw-bold">Subtotal: ${{ totalPrice|number_format(2) }}</p>
 
         <div class="d-flex justify-content-end">
-            <a href="" class="btn btn-primary px-5">Order</a>
+            <a href="" class="btn btn-primary px-5">Checkout</a>
         </div>
     </main>
 {% endblock %}
