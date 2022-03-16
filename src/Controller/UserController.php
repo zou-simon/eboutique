@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserAdminType;
 use App\Form\UserType;
 use App\Repository\CartLineRepository;
 use App\Repository\CartRepository;
@@ -31,9 +32,10 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, ProductRepository $productRepository): Response
+    #[Route('/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, ProductRepository $productRepository): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -47,14 +49,36 @@ class UserController extends AbstractController
                 );
             }
             $userRepository->add($user);
-            if ($this->getUser() && in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-                return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
-            }
             return $this->render('user/index.html.twig', [
                 'user' => $user,
                 'customer_addresses' => $user->getCustomerAddresses(),
                 'message' => 'Successful update!',
             ]);
+        }
+
+        return $this->renderForm('user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/edit/{id}', name: 'app_user_edit_with_id', methods: ['GET', 'POST'])]
+    public function editWithId(Request $request, User $user, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, ProductRepository $productRepository): Response
+    {
+        $form = $this->createForm(UserAdminType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($plainPassword = $form->get('plainPassword')->getData()) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $plainPassword
+                    )
+                );
+            }
+            $userRepository->add($user);
+            return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/edit.html.twig', [
