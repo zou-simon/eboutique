@@ -68,6 +68,8 @@ class UserController extends AbstractController
         CartLineRepository $cartLineRepository,
         CartRepository $cartRepository,
         CustomerAddressRepository $customerAddressRepository,
+        OrderRepository $orderRepository,
+        OrderLineRepository $orderLineRepository
     ): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
@@ -84,6 +86,15 @@ class UserController extends AbstractController
             $customerAddresses = $user->getCustomerAddresses();
             foreach ($customerAddresses as $customerAddress) {
                 $customerAddressRepository->remove($customerAddress);
+            }
+            // Delete orders
+            $orders = $user->getOrders();
+            foreach ($orders as $order) {
+                $orderLines = $order->getOrderLines();
+                foreach ($orderLines as $orderLine) {
+                    $orderLineRepository->remove($orderLine);
+                }
+                $orderRepository->remove($order);
             }
             // Delete user
             $userRepository->remove($user);
