@@ -21,6 +21,9 @@
                     {{ app.session.get('cartSize') is null ? 0 : app.session.get('cartSize') }}
                 </a>
                 {% if app.user %}
+                    {% if 'ROLE_ADMIN' in app.user.getRoles %}
+                        <a class="btn btn-primary" href="{{ path('app_admin') }}">Admin</a>
+                    {% endif %}
                     <a class="btn btn-outline-secondary" href="{{ path('app_user') }}">Account</a>
                     <a class="btn btn-outline-primary" href="{{ path('app_logout') }}">Logout</a>
                 {% else %}
