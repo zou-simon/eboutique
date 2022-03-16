@@ -20,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for cartLine in cartLines|reverse %}
+                    {% for cartLine in cart.cartLines|reverse %}
                         {% set product = cartLine.product %}
                         {% set totalPrice = totalPrice + product.price * 1.2 * cartLine.quantity %}
                         <tr>
@@ -60,13 +60,18 @@
             </table>
         </div>
 
-        <p class="text-end fw-bold{{ totalPrice != 0 ? ' mb-0' }}">Subtotal: ${{ totalPrice|number_format(2) }}</p>
-        {% if totalPrice != 0 %}
+        {% if cart.cartLines|length > 0 %}
+            <p class="text-end fw-bold{{ totalPrice != 0 ? ' mb-0' }}">Subtotal: ${{ totalPrice|number_format(2) }}</p>
             <p class="text-end">Delivery price: <span class="text-success">FREE</span></p>
-        {% endif %}
 
-        <div class="d-flex justify-content-end">
-            <a href="" class="btn btn-primary px-5">Checkout</a>
-        </div>
+            <div class="d-flex justify-content-end">
+                <a href="{{ path('app_order_new', {'id': cart.id}) }}" class="btn btn-primary px-5">Checkout</a>
+            </div>
+
+        {% else %}
+            <div class="d-flex justify-content-end">
+                <a href="{{ path('app_product_index') }}" class="btn btn-primary px-5">Add product</a>
+            </div>
+        {% endif %}
     </main>
 {% endblock %}

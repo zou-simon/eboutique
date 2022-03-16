@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\Order;
+use App\Entity\OrderLine;
+use App\Repository\CartLineRepository;
+use App\Repository\CartRepository;
 use App\Repository\OrderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +25,16 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_order_new', methods: ['POST'])]
-    public function new(Request $request, OrderRepository $orderRepository): Response
+    #[Route('/new/{id}', name: 'app_order_new', methods: ['GET', 'POST'])]
+    public function new(Cart $cart, EntityManagerInterface $entityManager, CartRepository $cartRepository, CartLineRepository $cartLineRepository): Response
     {
         $order = new Order();
+        $user = $this->getUser();
+        $order->setCart($cart);
+        $order->setUser($user);
+        $order->setDateTime(new \DateTime());
+        $order->setOrderNumber($user->getId() . date("YmdHi"));
+        $order->setValid(true);
 
         return $this->render('order/show.html.twig', [
             'order' => $order,

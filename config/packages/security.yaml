@@ -42,6 +42,7 @@ security:
          - { path: ^/account/edit/, roles: ROLE_ADMIN }
          - { path: ^/account, roles: [ROLE_USER, ROLE_ADMIN] }
          - { path: ^/address, roles: [ROLE_USER, ROLE_ADMIN] }
+         - { path: ^/order, roles: [ROLE_USER, ROLE_ADMIN] }
 
 when@test:
     security:

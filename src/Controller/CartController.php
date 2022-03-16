@@ -47,7 +47,7 @@ class CartController extends AbstractController
         $session->set('cartSize', $cart->getCartSize());
         $session->set('cartId', $cart->getId());
         return $this->render('cart/index.html.twig', [
-            'cartLines' => $cartLines
+            'cart' => $cart
         ]);
     }
 
@@ -124,7 +124,7 @@ class CartController extends AbstractController
             if ($cartLine->getProduct() === $product) {
                 $cartLine->setQuantity($cartLine->getQuantity() + 1);
                 return [
-                    'cartLine' =>$cartLine,
+                    'cartLine' => $cartLine,
                     'inCart' => true
                 ];
             }
@@ -136,7 +136,7 @@ class CartController extends AbstractController
         $cartLine->setCart($cart);
         $cartLine->setQuantity(1);
         return [
-            'cartLine' =>$cartLine,
+            'cartLine' => $cartLine,
             'inCart' => false
         ];
     }
