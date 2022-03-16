@@ -22,13 +22,13 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control firstInput',
                     'placeholder' => 'First name'
                 ],
             ])
             ->add('lastName', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control firstInput',
+                    'class' => 'form-control',
                     'placeholder' => 'Last name'
                 ],
             ])
