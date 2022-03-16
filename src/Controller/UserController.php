@@ -9,6 +9,7 @@ use App\Repository\CartRepository;
 use App\Repository\CustomerAddressRepository;
 use App\Repository\OrderLineRepository;
 use App\Repository\OrderRepository;
+use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,10 +31,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher): Response
+    #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, User $user, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, ProductRepository $productRepository): Response
     {
-        $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -47,6 +47,9 @@ class UserController extends AbstractController
                 );
             }
             $userRepository->add($user);
+            if ($this->getUser() && in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+                return $this->redirectToRoute('app_admin', [], Response::HTTP_SEE_OTHER);
+            }
             return $this->render('user/index.html.twig', [
                 'user' => $user,
                 'customer_addresses' => $user->getCustomerAddresses(),

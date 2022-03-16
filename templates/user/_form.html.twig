@@ -1,4 +1,9 @@
 {{ form_start(form) }}
+
+    {% if 'ROLE_ADMIN' in app.user.getRoles %}
+        {{ form_row(form.roles) }}
+    {% endif %}
+
     {{ form_widget(form) }}
     <button class="btn btn-primary mb-3">Update</button>
 {{ form_end(form) }}
