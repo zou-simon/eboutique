@@ -22,11 +22,9 @@ class CartController extends AbstractController
     #[Route('/', name: 'app_cart')]
     public function index(CartRepository $cartRepository, EntityManagerInterface $entityManager, Session $session): Response
     {
-        $cartLines = [];
         if ($user = $this->getUser()) {
             if (count($user->getCarts())) {
                 $cart = $user->getLastCart();
-                $cartLines = $cart->getCartLines();
             } else {
                 $cart = new Cart();
                 $cart->setUser($user);
@@ -36,7 +34,6 @@ class CartController extends AbstractController
         } else {
             if ($session->get('cartId') !== null) {
                 $cart = $cartRepository->findOneBy(['id' => $session->get('cartId')]);
-                $cartLines = $cart->getCartLines();
             } else {
                 $cart = new Cart();
                 $entityManager->persist($cart);
