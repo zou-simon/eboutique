@@ -29,8 +29,8 @@
                             <td>{{ category.name }}</td>
                             <td>{{ category.description }}</td>
                             <td>
-                                <a href="{{ path('app_category_show', {'id': category.id}) }}" class="btn btn-primary">Show</a>
-                                <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-primary">Edit</a>
+                                <a href="{{ path('app_category_show', {'id': category.id}) }}">Show</a>
+                                <a href="{{ path('app_category_edit', {'id': category.id}) }}">Edit</a>
                             </td>
                         </tr>
                     {% else %}
@@ -66,8 +66,8 @@
                             <td>{{ product.price }}</td>
                             <td>{{ product.available ? 'Yes' : 'No' }}</td>
                             <td>
-                                <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-primary mb-1">Show</a>
-                                <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-primary mb-1">Edit</a>
+                                <a href="{{ path('app_product_show', {'id': product.id}) }}">Show</a>
+                                <a href="{{ path('app_product_edit', {'id': product.id}) }}">Edit</a>
                             </td>
                         </tr>
                     {% else %}
@@ -103,7 +103,7 @@
                             <td>{{ user.lastName }}</td>
                             <td>{{ user.phone }}</td>
                             <td>
-                                <a href="{{ path('app_user_edit_with_id', {'id': user.id}) }}" class="btn btn-primary">Edit</a>
+                                <a href="{{ path('app_user_edit_with_id', {'id': user.id}) }}">Edit</a>
                             </td>
                         </tr>
                     {% else %}
