@@ -46,6 +46,7 @@ class UserController extends AbstractController
                     )
                 );
             }
+            $user->setRoles(["ROLE_ADMIN"]);
             $userRepository->add($user);
             return $this->render('user/index.html.twig', [
                 'user' => $user,
