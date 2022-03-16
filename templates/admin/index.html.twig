@@ -5,7 +5,42 @@
 {% block content %}
     <main class="container-md">
         <h1>Admin</h1>
-        <a class="btn btn-primary mb-3" href="{{ path('app_product_new') }}">Add new product</a>
+        <div class="d-flex justify-content-evenly">
+            <a class="btn btn-primary mb-3" href="{{ path('app_category_new') }}">Add new category</a>
+            <a class="btn btn-primary mb-3" href="{{ path('app_product_new') }}">Add new product</a>
+        </div>
+
+        <h3>Categories</h3>
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.description }}</td>
+                            <td>
+                                <a href="{{ path('app_category_show', {'id': category.id}) }}" class="btn btn-primary">Show</a>
+                                <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-primary">Edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No categories</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         <h3>Products</h3>
         <div class="table-responsive">
@@ -31,8 +66,8 @@
                             <td>{{ product.price }}</td>
                             <td>{{ product.available ? 'Yes' : 'No' }}</td>
                             <td>
-                                <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
-                                <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
+                                <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-primary mb-1">Show</a>
+                                <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-primary mb-1">Edit</a>
                             </td>
                         </tr>
                     {% else %}
@@ -68,7 +103,7 @@
                             <td>{{ user.lastName }}</td>
                             <td>{{ user.phone }}</td>
                             <td>
-                                <a href="{{ path('app_user_edit_with_id', {'id': user.id}) }}">edit</a>
+                                <a href="{{ path('app_user_edit_with_id', {'id': user.id}) }}" class="btn btn-primary">Edit</a>
                             </td>
                         </tr>
                     {% else %}
