@@ -26,7 +26,6 @@ class CustomerAddressController extends AbstractController
             $customerAddressRepository->add($customerAddress);
             return $this->render('user/index.html.twig', [
                 'user' => $user,
-                'customer_addresses' => $user->getCustomerAddresses(),
                 'message' => 'Successfully added an address!',
             ]);
         }
@@ -48,7 +47,6 @@ class CustomerAddressController extends AbstractController
             $customerAddressRepository->add($customerAddress);
             return $this->render('user/index.html.twig', [
                 'user' => $user,
-                'customer_addresses' => $user->getCustomerAddresses(),
                 'message' => 'Successful address update!',
             ]);
         }

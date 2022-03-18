@@ -6,29 +6,72 @@
     <main class="container-md">
         <h1>Order</h1>
 
-        <table class="table">
-            <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ order.id }}</td>
-            </tr>
-            <tr>
-                <th>OrderNumber</th>
-                <td>{{ order.orderNumber }}</td>
-            </tr>
-            <tr>
-                <th>Valid</th>
-                <td>{{ order.valid ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>DateTime</th>
-                <td>{{ order.dateTime ? order.dateTime|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <tbody>
+                <tr>
+                    <th>Order number</th>
+                    <td>{{ order.orderNumber }}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ order.dateTime ? order.dateTime|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Valid</th>
+                    <td>{{ order.valid ? 'Yes' : 'No' }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-        {% if order.id is not null %}
-            {{ include('order/_delete_form.html.twig') }}
-        {% endif %}
+        {% set totalPrice = 0 %}
+        {% set totalPriceExclTax = 0 %}
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for orderLine in order.orderLines|reverse %}
+                        {% set product = orderLine.product %}
+                        {% set totalPrice = totalPrice + product.price * 1.2 * orderLine.quantity %}
+                        <tr>
+                            {% set media = product.media|first %}
+                            <th scope="row">
+                                <img
+                                        src="{{ media ? product.media|first.path }}"
+                                        class="rounded-2 border"
+                                        alt="{{ media and media.alt ? product.media|first.alt : product.name }}"
+                                        height="150"
+                                        width="150"
+                                >
+                            </th>
+                            <td>
+                                <a href="{{ path('app_product_show', {'id': product.id}) }}" class="text-decoration-none text-dark">
+                                    {{ product.name }}
+                                </a>
+                            </td>
+                            <td>${{ (product.price * 1.2)|number_format(2) }}</td>
+                            <td>{{ orderLine.quantity }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5">No products found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <p class="text-end fw-bold mb-0">Subtotal: ${{ totalPrice|number_format(2) }}</p>
+        <p class="text-end">Delivery price: <span class="text-success">FREE</span></p>
+
+        {{ include('order/_delete_form.html.twig') }}
     </main>
 {% endblock %}

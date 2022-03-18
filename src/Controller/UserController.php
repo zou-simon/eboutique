@@ -25,10 +25,8 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user', methods: ['GET'])]
     public function index(): Response
     {
-        $user = $this->getUser();
         return $this->render('user/index.html.twig', [
-            'user' => $user,
-            'customer_addresses' => $user->getCustomerAddresses(),
+            'user' => $this->getUser()
         ]);
     }
 
@@ -51,7 +49,6 @@ class UserController extends AbstractController
             $userRepository->add($user);
             return $this->render('user/index.html.twig', [
                 'user' => $user,
-                'customer_addresses' => $user->getCustomerAddresses(),
                 'message' => 'Successful update!',
             ]);
         }
