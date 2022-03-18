@@ -22,7 +22,7 @@
                 <tbody>
                     {% for cartLine in cart.cartLines|reverse %}
                         {% set product = cartLine.product %}
-                        {% set totalPrice = totalPrice + product.price * 1.2 * cartLine.quantity %}
+                        {% set totalPrice = totalPrice + product.price * cartLine.quantity %}
                         <tr>
                             {% set media = product.media|first %}
                             <th scope="row">
@@ -39,7 +39,7 @@
                                     {{ product.name }}
                                 </a>
                             </td>
-                            <td>${{ (product.price * 1.2)|number_format(2) }}</td>
+                            <td>${{ product.price|number_format(2) }}</td>
                             <td>
                                 <form method="post" action="{{ path('app_cart_update') }}">
                                     <label>

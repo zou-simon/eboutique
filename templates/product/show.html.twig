@@ -23,7 +23,7 @@
                 {{ product.available ? '<span class="text-success fw-light">In Stock</span>' : '<span class="text-danger fw-light">Out of Stock</span>' }}
                 <h1>{{ product.name }}</h1>
                 <p class="text-muted text-break">{{ product.description }}</p>
-                <h2>${{ (product.price * 1.2)|number_format(2) }}</h2>
+                <h2>${{ product.price|number_format(2) }}</h2>
 
                 {{ include('product/_add_form.html.twig') }}
             </div>

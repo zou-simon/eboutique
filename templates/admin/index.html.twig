@@ -122,32 +122,32 @@
         <div class="table-responsive">
             <table class="table align-middle">
                 <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Order number</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Valid</th>
-                    <th scope="col"></th>
-                </tr>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Order number</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Valid</th>
+                        <th scope="col"></th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for order in orders %}
-                    <tr>
-                        <td>{{ order.id }}</td>
-                        <td>{{ order.orderNumber }}</td>
-                        <td>{{ order.user.firstName ~ ' ' ~ order.user.lastName ~ ' (' ~ order.user.id ~ ')' }}</td>
-                        <td>{{ order.dateTime|date("Y-m-d H:i:s") }}</td>
-                        <td>{{ order.valid ? 'Yes' : 'No' }}</td>
-                        <td>
-                            <a href="{{ path('app_order_show', {'id': order.id}) }}">Show</a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="7" class="text-center py-5">No orders found</td>
-                    </tr>
-                {% endfor %}
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.orderNumber }}</td>
+                            <td>{{ order.user.firstName ~ ' ' ~ order.user.lastName ~ ' (' ~ order.user.id ~ ')' }}</td>
+                            <td>{{ order.dateTime|date("Y-m-d H:i:s") }}</td>
+                            <td>{{ order.valid ? 'Yes' : 'No' }}</td>
+                            <td>
+                                <a href="{{ path('app_order_show', {'id': order.id}) }}">Show</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5">No orders found</td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

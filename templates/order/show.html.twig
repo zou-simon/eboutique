@@ -3,30 +3,40 @@
 {% block title %}Order{% endblock %}
 
 {% block content %}
+    {% set totalPrice = 0 %}
+    {% for orderLine in order.orderLines|reverse %}
+        {% set totalPrice = totalPrice + orderLine.product.price * orderLine.quantity %}
+    {% endfor %}
     <main class="container-md">
         <h1>Order</h1>
 
         <div class="table-responsive">
             <table class="table align-middle">
                 <tbody>
-                <tr>
-                    <th>Order number</th>
-                    <td>{{ order.orderNumber }}</td>
-                </tr>
-                <tr>
-                    <th>Date</th>
-                    <td>{{ order.dateTime ? order.dateTime|date('Y-m-d H:i:s') : '' }}</td>
-                </tr>
-                <tr>
-                    <th>Valid</th>
-                    <td>{{ order.valid ? 'Yes' : 'No' }}</td>
-                </tr>
+                    <tr>
+                        <th>Order number</th>
+                        <td>{{ order.orderNumber }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{ order.dateTime ? order.dateTime|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Valid</th>
+                        <td>{{ order.valid ? 'Yes' : 'No' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Subtotal</th>
+                        <td>${{ totalPrice|number_format(2) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Delivery price</th>
+                        <td>FREE</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
 
-        {% set totalPrice = 0 %}
-        {% set totalPriceExclTax = 0 %}
         <div class="table-responsive">
             <table class="table align-middle">
                 <thead>
@@ -40,7 +50,6 @@
                 <tbody>
                     {% for orderLine in order.orderLines|reverse %}
                         {% set product = orderLine.product %}
-                        {% set totalPrice = totalPrice + product.price * 1.2 * orderLine.quantity %}
                         <tr>
                             {% set media = product.media|first %}
                             <th scope="row">
@@ -57,12 +66,12 @@
                                     {{ product.name }}
                                 </a>
                             </td>
-                            <td>${{ (product.price * 1.2)|number_format(2) }}</td>
+                            <td>${{ product.price|number_format(2) }}</td>
                             <td>{{ orderLine.quantity }}</td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5" class="text-center py-5">No products found</td>
+                            <td colspan="4" class="text-center py-5">No products found</td>
                         </tr>
                     {% endfor %}
                 </tbody>
